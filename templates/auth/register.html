@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Sign Up — Folixo{% endblock %}
+{% block extra_css %}
+<style>
+.auth-page{min-height:100vh;display:flex;align-items:center;background:var(--bg);padding:80px 0 40px;}
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;max-width:560px;width:100%;margin:0 auto;box-shadow:var(--sh2);animation:fadeUp .5s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.auth-logo{text-align:center;margin-bottom:24px;}
+.auth-title{font-size:22px;font-weight:800;color:var(--txt);margin-bottom:4px;}
+.auth-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+.fl{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.fl label{font-size:12px;font-weight:600;color:var(--txt2);}
+.fi{width:100%;padding:10px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;color:var(--txt);font-size:14px;outline:none;transition:all .3s;}
+.fi:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(108,63,197,.15);background:var(--bg);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sec-notice{background:var(--bg3);border:1px solid var(--border2);border-left:4px solid var(--p);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--txt2);margin-bottom:20px;}
+.sec-group{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
+.sec-group h6{font-size:12px;font-weight:700;color:var(--p);margin-bottom:10px;}
+.pw-wrap{position:relative;}
+.pw-wrap .fi{padding-right:40px;}
+.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);cursor:pointer;font-size:16px;}
+.str-bar{height:4px;border-radius:2px;background:var(--bg3);margin-top:5px;overflow:hidden;}
+.str-fill{height:100%;border-radius:2px;transition:all .4s;}
+.str-txt{font-size:11px;color:var(--muted);margin-top:3px;}
+.btn-submit{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .3s;margin-top:8px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--glow);}
+.auth-foot{text-align:center;margin-top:16px;font-size:14px;color:var(--muted);}
+.auth-foot a{color:var(--p);font-weight:600;}
+@media(max-width:500px){.row2{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block content %}
+<div class="auth-page">
+<div class="container">
+<div class="auth-card">
+  <div class="auth-logo">
+    <svg viewBox="0 0 180 44" width="130" height="32" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6c3fc5"><animate attributeName="stop-color" values="#6c3fc5;#9333ea;#6c3fc5" dur="4s" repeatCount="indefinite"/></stop><stop offset="100%" stop-color="#fb923c"><animate attributeName="stop-color" values="#fb923c;#f472b6;#fb923c" dur="4s" repeatCount="indefinite"/></stop></linearGradient></defs>
+      <rect x="1" y="2" width="40" height="40" rx="11" fill="#6c3fc5"><animate attributeName="rx" values="11;15;11" dur="3s" repeatCount="indefinite"/></rect>
+      <rect x="10" y="11" width="21" height="4" rx="2" fill="white"/><rect x="10" y="19" width="15" height="4" rx="2" fill="white"/><rect x="10" y="11" width="4" height="20" rx="2" fill="white"/>
+      <text x="50" y="32" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="22" fill="url(#rg)">olixo</text>
+      <circle cx="88" cy="14" r="3" fill="#fb923c"><animate attributeName="r" values="3;4.5;3" dur="2s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+  <div class="text-center">
+    <div class="auth-title">Create your free account</div>
+    <div class="auth-sub">Join thousands building stunning resumes & portfolios</div>
+  </div>
+  <form method="POST">
+    <div class="row2">
+      <div class="fl"><label>Full Name</label><input type="text" name="name" class="fi" placeholder="Muhammad Zain Asif" value="{{ form.get('name','') }}" required/></div>
+      <div class="fl"><label>Email Address</label><input type="email" name="email" class="fi" placeholder="zain@example.com" value="{{ form.get('email','') }}" required/></div>
+    </div>
+    <div class="row2">
+      <div class="fl">
+        <label>Password</label>
+        <div class="pw-wrap"><input type="password" name="password" class="fi" id="pw1" placeholder="Min. 8 characters" required/><i class="bi bi-eye pw-eye" id="e1"></i></div>
+        <div class="str-bar"><div class="str-fill" id="sf"></div></div>
+        <div class="str-txt" id="st"></div>
+      </div>
+      <div class="fl">
+        <label>Confirm Password</label>
+        <div class="pw-wrap"><input type="password" name="confirm_password" class="fi" id="pw2" placeholder="Repeat password" required/><i class="bi bi-eye pw-eye" id="e2"></i></div>
+      </div>
+    </div>
+
+    <div class="sec-notice"><i class="bi bi-shield-lock-fill me-2" style="color:var(--p);"></i><strong>Account Recovery:</strong> Choose 3 security questions to recover your account if you forget your password.</div>
+
+    {% for i in range(1,4) %}
+    <div class="sec-group">
+      <h6>Security Question {{ i }}</h6>
+      <div class="fl" style="margin-bottom:10px;">
+        <label>Question</label>
+        <select name="sq{{ i }}" class="fi" required>
+          <option value="" disabled selected>— Select question —</option>
+          {% for q in questions %}<option value="{{ q }}" {{ 'selected' if form.get('sq'+i|string)==q else '' }}>{{ q }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="fl" style="margin-bottom:0;">
+        <label>Your Answer</label>
+        <input type="text" name="sa{{ i }}" class="fi" placeholder="Your answer (not case-sensitive)" value="{{ form.get('sa'+i|string,'') }}" required autocomplete="off"/>
+      </div>
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn-submit"><i class="bi bi-rocket-takeoff me-2"></i>Create Free Account</button>
+  </form>
+  <div class="auth-foot">Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+// Password toggle
+[['pw1','e1'],['pw2','e2']].forEach(([id,eid])=>{
+  document.getElementById(eid).addEventListener('click',()=>{
+    const i=document.getElementById(id);
+    i.type=i.type==='password'?'text':'password';
+    document.getElementById(eid).className=`bi bi-eye${i.type==='password'?'':'-slash'} pw-eye`;
+  });
+});
+// Strength
+document.getElementById('pw1').addEventListener('input',function(){
+  const v=this.value; let s=0;
+  if(v.length>=8)s++; if(/[A-Z]/.test(v))s++; if(/[0-9]/.test(v))s++; if(/[^A-Za-z0-9]/.test(v))s++;
+  const L=[{p:'0%',c:'transparent',t:''},{p:'25%',c:'#ef4444',t:'Weak'},{p:'50%',c:'#f59e0b',t:'Fair'},{p:'75%',c:'#3b82f6',t:'Good'},{p:'100%',c:'#22c55e',t:'Strong ✓'}][s];
+  document.getElementById('sf').style.cssText=`width:${L.p};background:${L.c}`;
+  document.getElementById('st').textContent=L.t;document.getElementById('st').style.color=L.c;
+});
+</script>
+{% endblock %}

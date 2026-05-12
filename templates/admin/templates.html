@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Templates — Folixo Admin</title>
+<link rel="icon" href="/static/images/favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+<style>
+:root{--bg:#04040e;--bg1:#080818;--bg2:#0d0d20;--card:#0f0f24;--border:rgba(99,56,210,.15);--b2:rgba(99,56,210,.3);--p:#6338d2;--p2:#8b5cf6;--p3:#a78bfa;--txt:#ece9ff;--txt2:#8880b0;--muted:#3d395c;--green:#10b981;--red:#ef4444;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);display:flex;min-height:100vh;}
+.sb{width:220px;background:var(--bg1);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;}
+.sb-brand{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sb-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--p2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;}
+.sb-brand-text .name{font-size:14px;font-weight:800;}.sb-brand-text .sub{font-size:10px;color:var(--muted);}
+.sb-nav{flex:1;padding:10px 8px;}
+.sb-section{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:10px 10px 4px;}
+.sl{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:12px;font-weight:500;color:var(--txt2);text-decoration:none;margin-bottom:1px;transition:all .2s;position:relative;}
+.sl:hover{background:rgba(99,56,210,.12);color:var(--p3);}
+.sl.active{background:rgba(99,56,210,.2);color:var(--p3);font-weight:600;}
+.sl.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:16px;background:var(--p2);border-radius:0 3px 3px 0;}
+.sl i{font-size:14px;width:16px;text-align:center;}
+.sb-foot{padding:12px 16px;border-top:1px solid var(--border);}
+.sb-logout{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:8px;font-size:12px;font-weight:600;color:var(--red);background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);text-decoration:none;}
+.sb-logout:hover{background:rgba(239,68,68,.2);}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;}
+.topbar{height:52px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.topbar h1{font-size:16px;font-weight:700;}
+.btn-add{display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:9px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;}
+.btn-add:hover{opacity:.9;color:#fff;}
+.content{padding:24px;}
+.filter-bar{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
+.fb{padding:6px 16px;border-radius:50px;font-size:11px;font-weight:600;border:1px solid var(--border);background:none;color:var(--txt2);cursor:pointer;transition:all .2s;}
+.fb:hover,.fb.active{background:rgba(99,56,210,.2);color:var(--p3);border-color:var(--p);}
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s;}
+.tc:hover{border-color:var(--b2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.tc-thumb{height:110px;position:relative;}
+.tc-mock{width:100%;height:100%;padding:12px;display:flex;flex-direction:column;gap:0;}
+.tm-h{height:8px;border-radius:2px;background:rgba(255,255,255,.8);width:48%;margin-bottom:5px;}
+.tm-t{height:6px;border-radius:2px;background:rgba(255,255,255,.5);width:32%;margin-bottom:8px;}
+.tm-l{height:4px;border-radius:2px;background:rgba(255,255,255,.25);margin-bottom:3px;}
+.status-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;}
+.dot-on{background:#10b981;box-shadow:0 0 6px rgba(16,185,129,.6);}
+.dot-off{background:var(--red);}
+.tc-info{padding:10px 12px;}
+.tc-name{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:5px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;margin-right:3px;}
+.t-r{background:rgba(26,115,232,.2);color:#60a5fa;}
+.t-c{background:rgba(26,35,126,.2);color:#818cf8;}
+.t-s{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid rgba(255,255,255,.08);}
+.tc-actions{display:flex;gap:5px;padding:0 12px 10px;}
+.ab{flex:1;padding:5px;border-radius:7px;font-size:10px;font-weight:600;border:none;cursor:pointer;transition:all .2s;text-align:center;}
+.ab-toggle-on{background:rgba(239,68,68,.1);color:#f87171;}
+.ab-toggle-on:hover{background:rgba(239,68,68,.25);}
+.ab-toggle-off{background:rgba(16,185,129,.1);color:#34d399;}
+.ab-toggle-off:hover{background:rgba(16,185,129,.25);}
+.ab-del{background:rgba(239,68,68,.08);color:#f87171;}
+.ab-del:hover{background:rgba(239,68,68,.2);}
+.stats-row{display:flex;gap:10px;margin-bottom:18px;}
+.ms{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:11px;color:var(--muted);}
+.ms strong{display:block;font-size:18px;font-weight:800;margin-bottom:1px;}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-brand"><div class="sb-logo">F</div><div class="sb-brand-text"><div class="name">Folixo</div><div class="sub">Control Panel</div></div></div>
+  <nav class="sb-nav">
+    <div class="sb-section">Overview</div>
+    <a href="/admin/dashboard" class="sl"><i class="bi bi-speedometer2"></i>Dashboard</a>
+    <div class="sb-section">User Management</div>
+    <a href="/admin/users" class="sl"><i class="bi bi-people-fill"></i>All Users</a>
+    <a href="/admin/users?status=active" class="sl"><i class="bi bi-person-check"></i>Active</a>
+    <a href="/admin/users?status=banned" class="sl"><i class="bi bi-person-slash"></i>Banned</a>
+    <div class="sb-section">Templates</div>
+    <a href="/admin/templates" class="sl active"><i class="bi bi-collection-fill"></i>All Templates</a>
+    <a href="/admin/templates/add" class="sl"><i class="bi bi-plus-circle-fill"></i>Add New</a>
+  </nav>
+  <div class="sb-foot"><a href="/admin/logout" class="sb-logout"><i class="bi bi-box-arrow-left"></i>Logout</a></div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <h1><i class="bi bi-collection-fill me-2" style="color:var(--p3);"></i>Templates ({{ templates|length }})</h1>
+    <a href="/admin/templates/add" class="btn-add"><i class="bi bi-plus-lg"></i>Add New Template</a>
+  </div>
+  <div class="content">
+    <div class="stats-row">
+      <div class="ms"><strong style="color:#60a5fa;">{{ templates|selectattr('category','eq','resume')|list|length }}</strong>Resumes</div>
+      <div class="ms"><strong style="color:#818cf8;">{{ templates|selectattr('category','eq','cv')|list|length }}</strong>CVs</div>
+      <div class="ms"><strong style="color:#34d399;">{{ templates|selectattr('is_active')|list|length }}</strong>Active</div>
+      <div class="ms"><strong style="color:#f87171;">{{ templates|rejectattr('is_active')|list|length }}</strong>Inactive</div>
+    </div>
+    <div class="filter-bar">
+      <button class="fb active" data-f="all">All</button>
+      <button class="fb" data-f="resume">Resume</button>
+      <button class="fb" data-f="cv">CV</button>
+    </div>
+    <div class="tmpl-grid" id="grid">
+      {% for t in templates %}
+      <div class="tc" data-cat="{{ t.category }}" id="tc-{{ t.id }}">
+        <div class="tc-thumb" style="background:linear-gradient(160deg,{{ t.color_accent }}ee,{{ t.color_accent }}66);">
+          <div class="status-dot {{ 'dot-on' if t.is_active else 'dot-off' }}" id="dot-{{ t.id }}"></div>
+          <div class="tc-mock">
+            <div class="tm-h"></div><div class="tm-t"></div>
+            {% for w in ['85%','70%','80%','60%'] %}<div class="tm-l" style="width:{{ w }};"></div>{% endfor %}
+          </div>
+        </div>
+        <div class="tc-info">
+          <div class="tc-name">{{ t.name }}</div>
+          <span class="tag t-{{ t.category[0] }}">{{ t.category }}</span>
+          <span class="tag t-s">{{ t.style }}</span>
+        </div>
+        <div class="tc-actions">
+          <button class="ab {{ 'ab-toggle-on' if t.is_active else 'ab-toggle-off' }}"
+                  id="tbtn-{{ t.id }}"
+                  onclick="toggleT({{ t.id }},{{ 'true' if t.is_active else 'false' }})">
+            {{ 'Deactivate' if t.is_active else 'Activate' }}
+          </button>
+          <button class="ab ab-del" onclick="deleteT({{ t.id }})"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.fb').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  const f=b.dataset.f;
+  document.querySelectorAll('.tc').forEach(c=>{c.style.display=(f==='all'||c.dataset.cat===f)?'':'none';});
+}));
+async function toggleT(id,isActive){
+  const r=await fetch(`/admin/templates/${id}/toggle`,{method:'POST'});
+  const d=await r.json();
+  const dot=document.getElementById(`dot-${id}`);
+  const btn=document.getElementById(`tbtn-${id}`);
+  if(d.status==='active'){dot.className='status-dot dot-on';btn.textContent='Deactivate';btn.className='ab ab-toggle-on';btn.onclick=()=>toggleT(id,true);}
+  else{dot.className='status-dot dot-off';btn.textContent='Activate';btn.className='ab ab-toggle-off';btn.onclick=()=>toggleT(id,false);}
+}
+async function deleteT(id){
+  if(!confirm('Delete this template?'))return;
+  const r=await fetch(`/admin/templates/${id}/delete`,{method:'DELETE'});
+  if(r.ok){const c=document.getElementById(`tc-${id}`);c.style.transition='all .3s';c.style.opacity='0';setTimeout(()=>c.remove(),300);}
+}
+</script>
+</body>
+</html>

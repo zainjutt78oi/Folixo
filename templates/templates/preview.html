@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}{{ tmpl.name }} — Folixo{% endblock %}
+{% block extra_css %}
+<style>
+.prev-page{padding:48px 0 72px;}
+.prev-hero{display:flex;gap:48px;align-items:flex-start;margin-bottom:56px;}
+.prev-mock{flex-shrink:0;width:320px;background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;position:sticky;top:88px;animation:fadeUp .5s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.mock-bar{height:30px;display:flex;align-items:center;gap:5px;padding:0 12px;background:#f5f5f5;border-bottom:1px solid #eee;}
+.md{width:9px;height:9px;border-radius:50%;}
+.mock-body{padding:20px;}
+.ml{height:6px;border-radius:2px;background:#e5e5e5;margin-bottom:7px;}
+.ml-h{height:12px;border-radius:2px;margin-bottom:8px;}
+.ml-sec{height:8px;border-radius:2px;width:30%;margin:14px 0 7px;}
+.prev-info{flex:1;animation:fadeUp .5s ease .1s both;}
+.prev-info h1{font-size:28px;font-weight:800;color:var(--txt);margin-bottom:10px;}
+.prev-info>p{font-size:15px;color:var(--txt2);margin-bottom:22px;line-height:1.75;}
+.meta-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.mt{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;}
+.mt-r{background:rgba(26,115,232,.12);color:#1a73e8;}
+.mt-c{background:rgba(26,35,126,.12);color:#3949ab;}
+.mt-s{background:var(--bg2);color:var(--muted);border:1px solid var(--border);}
+.mt-ats{background:rgba(34,197,94,.12);color:#16a34a;}
+.mt-free{background:rgba(108,63,197,.12);color:var(--p);}
+.feat-list{display:flex;flex-direction:column;gap:11px;margin-bottom:32px;}
+.fr{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--txt2);}
+.fr i{color:var(--p);width:18px;flex-shrink:0;}
+.prev-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:20px;}
+.rel-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:var(--t);text-decoration:none;display:block;}
+.rel-card:hover{border-color:var(--p);transform:translateY(-4px);box-shadow:var(--sh2);}
+.rel-thumb{height:110px;position:relative;}
+.rel-mock{width:100%;height:100%;padding:10px;display:flex;flex-direction:column;gap:0;}
+.rh{height:7px;border-radius:2px;background:rgba(255,255,255,.7);width:50%;margin-bottom:5px;}
+.rl{height:4px;border-radius:2px;background:rgba(255,255,255,.3);margin-bottom:3px;}
+.rel-info{padding:10px 12px;}
+.rel-info h6{font-size:13px;font-weight:700;color:var(--txt);margin:0 0 3px;}
+.rel-info span{font-size:11px;color:var(--muted);}
+@media(max-width:768px){.prev-hero{flex-direction:column;}.prev-mock{width:100%;position:static;}}
+</style>
+{% endblock %}
+{% block content %}
+<div class="prev-page">
+<div class="container">
+  <div class="prev-hero">
+    <!-- Mockup -->
+    <div class="prev-mock">
+      <div class="mock-bar">
+        <div class="md" style="background:#ef4444;"></div>
+        <div class="md" style="background:#f59e0b;"></div>
+        <div class="md" style="background:#22c55e;"></div>
+        <span style="margin-left:8px;font-size:10px;color:#999;">{{ tmpl.name }}</span>
+      </div>
+      <div class="mock-body">
+        <div class="ml-h" style="width:55%;background:{{ tmpl.color_accent }};opacity:.8;"></div>
+        <div class="ml" style="width:38%;background:{{ tmpl.color_accent }};opacity:.5;"></div>
+        <div style="display:flex;gap:5px;margin-bottom:12px;">
+          {% for _ in range(3) %}<div class="ml" style="flex:1;height:5px;"></div>{% endfor %}
+        </div>
+        <div style="height:1.5px;background:{{ tmpl.color_accent }};opacity:.25;margin-bottom:10px;"></div>
+        <div class="ml-sec" style="background:{{ tmpl.color_accent }};opacity:.6;"></div>
+        {% for w in ['88%','72%','80%','60%','76%'] %}<div class="ml" style="width:{{ w }};"></div>{% endfor %}
+        <div class="ml-sec" style="background:{{ tmpl.color_accent }};opacity:.6;margin-top:12px;"></div>
+        {% for w in ['80%','65%','75%'] %}<div class="ml" style="width:{{ w }};"></div>{% endfor %}
+        <div style="display:flex;gap:5px;margin-top:12px;flex-wrap:wrap;">
+          {% for _ in range(6) %}<div style="height:18px;width:50px;border-radius:4px;background:{{ tmpl.color_accent }};opacity:.18;"></div>{% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="prev-info">
+      <h1>{{ tmpl.name }}</h1>
+      <p>A professional {{ tmpl.style }} {{ tmpl.category|upper }} template designed to pass ATS systems at top companies. Built to HR standards — clean, impactful, and completely free.</p>
+      <div class="meta-tags">
+        <span class="mt mt-{{ tmpl.category[0] }}">{{ tmpl.category|title }}</span>
+        <span class="mt mt-s">{{ tmpl.style|title }}</span>
+        <span class="mt mt-ats"><i class="bi bi-shield-check me-1"></i>ATS Optimized</span>
+        <span class="mt mt-free">Free Forever</span>
+      </div>
+      <div class="feat-list">
+        <div class="fr"><i class="bi bi-check-circle-fill"></i> Passes ATS at Google, Amazon, Meta, Microsoft</div>
+        <div class="fr"><i class="bi bi-check-circle-fill"></i> Real-time live preview as you type</div>
+        <div class="fr"><i class="bi bi-check-circle-fill"></i> Claude AI reviews and improves your content</div>
+        <div class="fr"><i class="bi bi-check-circle-fill"></i> One-click PDF export — no watermarks</div>
+        <div class="fr"><i class="bi bi-check-circle-fill"></i> Custom accent colors and font styles</div>
+        <div class="fr"><i class="bi bi-check-circle-fill"></i> 100% free — no hidden fees ever</div>
+      </div>
+      <div class="prev-btns">
+        <a href="{{ url_for('editor.open_editor', tid=tmpl.id) }}" class="btn btn-primary">
+          <i class="bi bi-pencil-square"></i> Use This Template
+        </a>
+        <a href="{{ url_for('templates.browse') }}?category={{ tmpl.category }}" class="btn btn-outline">
+          <i class="bi bi-grid"></i> More {{ tmpl.category|title }}s
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% if related %}
+  <h2 style="font-size:20px;font-weight:800;margin-bottom:6px;color:var(--txt);">Similar Templates</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:0;">All ATS-optimized and free to use.</p>
+  <div class="rel-grid">
+    {% for r in related %}
+    <a href="{{ url_for('templates.preview', tid=r.id) }}" class="rel-card">
+      <div class="rel-thumb" style="background:linear-gradient(160deg,{{ r.color_accent }}ee,{{ r.color_accent }}66);">
+        <div class="rel-mock">
+          <div class="rh"></div>
+          <div style="height:5px;border-radius:2px;background:rgba(255,255,255,.5);width:30%;margin-bottom:8px;"></div>
+          {% for w in ['88%','72%','82%','60%'] %}<div class="rl" style="width:{{ w }};"></div>{% endfor %}
+        </div>
+      </div>
+      <div class="rel-info">
+        <h6>{{ r.name }}</h6>
+        <span>{{ r.style|title }} · ATS ✓</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

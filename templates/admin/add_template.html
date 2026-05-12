@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Add Template — Folixo Admin</title>
+<link rel="icon" href="/static/images/favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+<style>
+:root{--bg:#04040e;--bg1:#080818;--bg2:#0d0d20;--card:#0f0f24;--border:rgba(99,56,210,.15);--b2:rgba(99,56,210,.3);--p:#6338d2;--p2:#8b5cf6;--p3:#a78bfa;--txt:#ece9ff;--txt2:#8880b0;--muted:#3d395c;--green:#10b981;--red:#ef4444;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);display:flex;min-height:100vh;}
+.sb{width:220px;background:var(--bg1);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;}
+.sb-brand{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sb-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--p2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;}
+.sb-brand-text .name{font-size:14px;font-weight:800;}.sb-brand-text .sub{font-size:10px;color:var(--muted);}
+.sb-nav{flex:1;padding:10px 8px;}
+.sb-section{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:10px 10px 4px;}
+.sl{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:12px;font-weight:500;color:var(--txt2);text-decoration:none;margin-bottom:1px;transition:all .2s;position:relative;}
+.sl:hover{background:rgba(99,56,210,.12);color:var(--p3);}
+.sl.active{background:rgba(99,56,210,.2);color:var(--p3);font-weight:600;}
+.sl.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:16px;background:var(--p2);border-radius:0 3px 3px 0;}
+.sl i{font-size:14px;width:16px;text-align:center;}
+.sb-foot{padding:12px 16px;border-top:1px solid var(--border);}
+.sb-logout{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:8px;font-size:12px;font-weight:600;color:var(--red);background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);text-decoration:none;}
+.sb-logout:hover{background:rgba(239,68,68,.2);}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;}
+.topbar{height:52px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:10px;}
+.back-btn{display:flex;align-items:center;gap:6px;color:var(--p3);font-size:12px;font-weight:600;text-decoration:none;}
+.back-btn:hover{color:var(--p2);}
+.content{padding:24px;display:flex;gap:24px;align-items:flex-start;}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;flex:1;max-width:480px;}
+.form-card h2{font-size:18px;font-weight:800;margin-bottom:4px;}
+.form-card p{font-size:12px;color:var(--muted);margin-bottom:24px;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.fg label{font-size:11px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;}
+.fi{width:100%;padding:9px 12px;background:var(--bg2);border:1.5px solid var(--border);border-radius:9px;color:var(--txt);font-size:13px;outline:none;transition:all .3s;font-family:inherit;}
+.fi:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,56,210,.15);}
+select.fi{cursor:pointer;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.color-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.cp{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;}
+.cp:hover,.cp.sel{transform:scale(1.25);border-color:var(--txt);}
+.btn-submit{width:100%;padding:11px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-weight:700;font-size:14px;border:none;cursor:pointer;transition:all .3s;margin-top:4px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,56,210,.4);}
+/* Preview */
+.preview-wrap{width:200px;flex-shrink:0;}
+.preview-wrap h5{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
+.tmpl-prev{border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:all .3s;}
+.tp-thumb{height:160px;padding:16px;display:flex;flex-direction:column;}
+.tp-h{height:10px;border-radius:2px;background:rgba(255,255,255,.85);width:50%;margin-bottom:6px;}
+.tp-t{height:7px;border-radius:2px;background:rgba(255,255,255,.55);width:35%;margin-bottom:10px;}
+.tp-l{height:5px;border-radius:2px;background:rgba(255,255,255,.25);margin-bottom:4px;}
+.tp-sec{height:7px;border-radius:2px;background:rgba(255,255,255,.55);width:28%;margin-bottom:6px;margin-top:8px;}
+.tp-info{background:var(--bg2);padding:10px 12px;}
+.tp-name{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.tp-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.tg{padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;background:rgba(99,56,210,.2);color:var(--p3);}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-brand"><div class="sb-logo">F</div><div class="sb-brand-text"><div class="name">Folixo</div><div class="sub">Control Panel</div></div></div>
+  <nav class="sb-nav">
+    <div class="sb-section">Overview</div>
+    <a href="/admin/dashboard" class="sl"><i class="bi bi-speedometer2"></i>Dashboard</a>
+    <div class="sb-section">User Management</div>
+    <a href="/admin/users" class="sl"><i class="bi bi-people-fill"></i>All Users</a>
+    <a href="/admin/users?status=active" class="sl"><i class="bi bi-person-check"></i>Active</a>
+    <a href="/admin/users?status=banned" class="sl"><i class="bi bi-person-slash"></i>Banned</a>
+    <div class="sb-section">Templates</div>
+    <a href="/admin/templates" class="sl"><i class="bi bi-collection-fill"></i>All Templates</a>
+    <a href="/admin/templates/add" class="sl active"><i class="bi bi-plus-circle-fill"></i>Add New</a>
+  </nav>
+  <div class="sb-foot"><a href="/admin/logout" class="sb-logout"><i class="bi bi-box-arrow-left"></i>Logout</a></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <a href="/admin/templates" class="back-btn"><i class="bi bi-arrow-left"></i>Back</a>
+    <span style="color:var(--muted);font-size:11px;">/ Add New Template</span>
+  </div>
+  <div class="content">
+    <div class="form-card">
+      <h2><i class="bi bi-plus-circle me-2" style="color:var(--p3);"></i>Add New Template</h2>
+      <p>New template will be available to all users immediately after adding.</p>
+      <form method="POST" onsubmit="return validateForm()">
+        <div class="fg">
+          <label>Template Name</label>
+          <input type="text" name="name" id="tName" class="fi" placeholder="e.g. Stanford Classic, Tesla Modern..." required/>
+        </div>
+        <div class="row2">
+          <div class="fg">
+            <label>Category</label>
+            <select name="category" id="tCat" class="fi" required onchange="updatePreview()">
+              <option value="" disabled selected>Select</option>
+              <option value="resume">Resume</option>
+              <option value="cv">CV</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Style</label>
+            <select name="style" id="tStyle" class="fi" required onchange="updatePreview()">
+              <option value="" disabled selected>Select</option>
+              <option value="modern">Modern</option>
+              <option value="classic">Classic</option>
+              <option value="creative">Creative</option>
+              <option value="minimal">Minimal</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Accent Color</label>
+          <input type="text" name="color_accent" id="colorInput" class="fi" value="#1a73e8" oninput="manualColor(this.value)"/>
+          <div class="color-row">
+            {% for c in ['#1a73e8','#0866ff','#ff9900','#6338d2','#1e3a5f','#e50914','#00695c','#1a237e','#a51c30','#0078d4','#1d1d1f','#e64a19','#10b981','#f59e0b'] %}
+            <div class="cp {% if loop.first %}sel{% endif %}" style="background:{{ c }};" data-c="{{ c }}" onclick="pickColor('{{ c }}',this)"></div>
+            {% endfor %}
+          </div>
+        </div>
+        <button type="submit" class="btn-submit"><i class="bi bi-plus-circle me-2"></i>Add Template</button>
+      </form>
+    </div>
+
+    <!-- Live preview -->
+    <div class="preview-wrap">
+      <h5>Live Preview</h5>
+      <div class="tmpl-prev" id="tmplPrev">
+        <div class="tp-thumb" id="tpThumb" style="background:linear-gradient(160deg,#1a73e8ee,#1a73e866);">
+          <div class="tp-h"></div><div class="tp-t"></div>
+          <div style="height:1px;background:rgba(255,255,255,.2);margin-bottom:8px;"></div>
+          <div class="tp-sec"></div>
+          {% for w in ['85%','70%','80%','60%','75%'] %}<div class="tp-l" style="width:{{ w }};"></div>{% endfor %}
+          <div class="tp-sec"></div>
+          {% for w in ['80%','65%','72%'] %}<div class="tp-l" style="width:{{ w }};"></div>{% endfor %}
+        </div>
+        <div class="tp-info">
+          <div class="tp-name" id="tpName">Template Name</div>
+          <div class="tp-tags">
+            <span class="tg" id="tpCat">Resume</span>
+            <span class="tg" id="tpStyle">Modern</span>
+            <span class="tg" style="background:rgba(16,185,129,.15);color:#34d399;">ATS ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function pickColor(c, el){
+  document.querySelectorAll('.cp').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('colorInput').value = c;
+  document.getElementById('tpThumb').style.background = `linear-gradient(160deg,${c}ee,${c}66)`;
+}
+function manualColor(v){
+  if(/^#[0-9A-Fa-f]{6}$/.test(v)){
+    document.getElementById('tpThumb').style.background=`linear-gradient(160deg,${v}ee,${v}66)`;
+    document.querySelectorAll('.cp').forEach(x=>x.classList.remove('sel'));
+  }
+}
+function updatePreview(){
+  const n=document.getElementById('tName').value||'Template Name';
+  const cat=document.getElementById('tCat').value||'Resume';
+  const sty=document.getElementById('tStyle').value||'Modern';
+  document.getElementById('tpName').textContent=n;
+  document.getElementById('tpCat').textContent=cat;
+  document.getElementById('tpStyle').textContent=sty;
+}
+document.getElementById('tName').addEventListener('input', updatePreview);
+function validateForm(){
+  const n=document.getElementById('tName').value.trim();
+  const cat=document.getElementById('tCat').value;
+  const sty=document.getElementById('tStyle').value;
+  if(!n||!cat||!sty){alert('Please fill all fields!');return false;}
+  return true;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+{% block title %}Folixo — World Class Resume & CV Builder{% endblock %}
+{% block extra_css %}
+<style>
+.hero{min-height:100vh;display:flex;align-items:center;background:var(--bg);position:relative;overflow:hidden;padding:90px 0 60px;}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
+.o1{width:700px;height:700px;top:-200px;right:-200px;background:radial-gradient(circle,rgba(108,63,197,.13),transparent 70%);animation:orb 10s ease-in-out infinite;}
+.o2{width:500px;height:500px;bottom:-150px;left:-150px;background:radial-gradient(circle,rgba(26,115,232,.1),transparent 70%);animation:orb 13s ease-in-out infinite reverse;}
+@keyframes orb{0%,100%{transform:translate(0,0)scale(1)}50%{transform:translate(24px,-24px)scale(1.06)}}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:50px;background:var(--bg3);border:1px solid var(--border2);color:var(--p);font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:24px;animation:fadeUp .6s ease both;}
+.hero-tag .pulse{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pg 1.5s ease infinite;}
+@keyframes pg{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.hero-h1{font-size:clamp(2.8rem,5.5vw,4.6rem);font-weight:900;line-height:1.06;color:var(--txt);margin-bottom:20px;animation:fadeUp .6s ease .1s both;}
+.hero-sub{font-size:17px;color:var(--txt2);line-height:1.75;max-width:500px;margin-bottom:36px;animation:fadeUp .6s ease .2s both;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s ease .3s both;margin-bottom:48px;}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap;animation:fadeUp .6s ease .4s both;}
+.hs-n{font-size:26px;font-weight:800;color:var(--txt);}
+.hs-l{font-size:12px;color:var(--muted);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+/* Hero visual - ATS score mockup */
+.hero-visual{position:relative;z-index:1;animation:fadeUp .8s ease .3s both;}
+.visual-main{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:0 24px 64px rgba(108,63,197,.15);}
+.vm-bar{display:flex;align-items:center;gap:6px;margin-bottom:18px;}
+.vm-dot{width:10px;height:10px;border-radius:50%;}
+.resume-preview{background:var(--bg2);border-radius:12px;padding:18px 16px;margin-bottom:14px;}
+.rp-name{height:14px;border-radius:3px;background:var(--border2);width:55%;margin-bottom:8px;}
+.rp-title{height:9px;border-radius:2px;background:var(--border);width:40%;margin-bottom:12px;}
+.rp-line{height:7px;border-radius:2px;background:var(--border);margin-bottom:6px;}
+.ats-card{background:var(--bg3);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
+.ats-score{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;}
+.ats-info h4{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:2px;}
+.ats-info p{font-size:11px;color:var(--muted);}
+.ats-bar-wrap{margin-top:6px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.ats-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#22c55e,#16a34a);animation:grow 1.5s ease 1s both;}
+@keyframes grow{from{width:0}to{width:92%}}
+/* Float badges */
+.fbadge{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.15);font-size:12px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.fb1{top:-20px;right:-30px;animation:float 3s ease-in-out infinite;}
+.fb2{bottom:20px;left:-30px;animation:float 3s ease-in-out infinite 1.5s;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+/* ── ATS Section ── */
+.ats-section{padding:80px 0;background:var(--bg2);}
+.ats-explain{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.ats-text h2{font-size:2rem;font-weight:800;margin-bottom:16px;color:var(--txt);}
+.ats-text p{font-size:15px;color:var(--txt2);line-height:1.75;margin-bottom:24px;}
+.ats-points{display:flex;flex-direction:column;gap:12px;}
+.ap{display:flex;align-items:flex-start;gap:12px;}
+.ap-icon{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.ap h5{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:3px;}
+.ap p{font-size:13px;color:var(--txt2);margin:0;}
+.score-visual{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;}
+.sv-title{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:20px;text-transform:uppercase;letter-spacing:.5px;}
+.sv-item{margin-bottom:14px;}
+.sv-item-head{display:flex;justify-content:space-between;margin-bottom:5px;font-size:13px;}
+.sv-item-head span:first-child{color:var(--txt2);font-weight:500;}
+.sv-item-head span:last-child{font-weight:700;}
+.sv-bar{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.sv-fill{height:100%;border-radius:3px;}
+/* ── Features ── */
+.features{padding:80px 0;}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;height:100%;transition:var(--t);}
+.feat-card:hover{border-color:var(--p);transform:translateY(-6px);box-shadow:var(--sh2);}
+.fi{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
+.feat-card h5{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--txt);}
+.feat-card p{font-size:14px;color:var(--txt2);line-height:1.7;margin:0;}
+/* ── Templates ── */
+.tmpls{padding:80px 0;background:var(--bg2);}
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.tc{background:var(--card);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;transition:var(--t);cursor:pointer;}
+.tc:hover{border-color:var(--p);transform:translateY(-8px);box-shadow:var(--sh2);}
+.tc-thumb{height:200px;position:relative;overflow:hidden;display:flex;align-items:flex-end;}
+/* Resume template mockup inside card */
+.tc-mock{width:100%;height:100%;padding:16px;display:flex;flex-direction:column;gap:0;}
+.tc-header{padding:16px;border-bottom:2px solid rgba(255,255,255,.15);margin-bottom:10px;}
+.tc-hname{height:12px;border-radius:2px;background:rgba(255,255,255,.8);width:50%;margin-bottom:6px;}
+.tc-htitle{height:8px;border-radius:2px;background:rgba(255,255,255,.5);width:35%;margin-bottom:6px;}
+.tc-hcontact{display:flex;gap:6px;margin-top:4px;}
+.tc-hc{height:6px;border-radius:2px;background:rgba(255,255,255,.3);flex:1;}
+.tc-body{flex:1;padding:0 16px;}
+.tc-sec{height:7px;border-radius:2px;margin-bottom:6px;width:30%;}
+.tc-line{height:5px;border-radius:2px;background:rgba(255,255,255,.25);margin-bottom:4px;}
+.tc-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .3s;}
+.tc:hover .tc-overlay{opacity:1;}
+.ov-btn{padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+.ov-p{background:var(--p);color:#fff;}
+.ov-g{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);}
+.ov-btn:hover{transform:scale(1.05);}
+.tc-info{padding:14px 16px;}
+.tc-name{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px;}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-right:4px;}
+.t-r{background:rgba(26,115,232,.12);color:#1a73e8;}
+.t-c{background:rgba(26,35,126,.12);color:#3949ab;}
+.t-s{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+/* ── CTA ── */
+.cta{padding:80px 0;}
+.cta-box{background:linear-gradient(135deg,var(--p),var(--p2));border-radius:28px;padding:72px 40px;text-align:center;position:relative;overflow:hidden;}
+.cta-box::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,.06)'/%3E%3C/svg%3E");}
+.cta-box h2{font-size:2.6rem;font-weight:900;color:#fff;margin-bottom:14px;position:relative;}
+.cta-box p{font-size:18px;color:rgba(255,255,255,.85);margin-bottom:36px;position:relative;}
+.btn-cta{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;border-radius:50px;background:#fff;color:var(--p);font-weight:700;font-size:16px;transition:var(--t);position:relative;}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.2);color:var(--p);}
+@media(max-width:768px){.ats-explain{grid-template-columns:1fr;}.hero-visual{display:none;}}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6" style="position:relative;z-index:1;">
+        <div class="hero-tag"><div class="pulse"></div> ATS-Optimized · 100% Free · AI Powered</div>
+        <h1 class="hero-h1">Build Resumes &amp; CVs That<br><span class="grad">Get You Hired</span></h1>
+        <p class="hero-sub">Beat ATS systems at Google, Amazon, Meta and 500+ top companies. Professional templates built by HR experts — powered by Claude AI.</p>
+        <div class="hero-btns">
+          <a href="{{ url_for('auth.register') }}" class="btn btn-primary"><i class="bi bi-rocket-takeoff"></i> Build My Resume Free</a>
+          <a href="{{ url_for('templates.browse') }}" class="btn btn-outline"><i class="bi bi-collection"></i> View Templates</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hs-n grad">{{ total_templates }}+</div><div class="hs-l">Templates</div></div>
+          <div><div class="hs-n grad">ATS</div><div class="hs-l">Optimized</div></div>
+          <div><div class="hs-n grad">AI</div><div class="hs-l">Powered</div></div>
+          <div><div class="hs-n grad">$0</div><div class="hs-l">Forever Free</div></div>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-visual">
+        <div style="position:relative;">
+          <div class="fbadge fb1"><i class="bi bi-check-circle-fill" style="color:#22c55e;"></i> ATS Score: 96%</div>
+          <div class="visual-main">
+            <div class="vm-bar">
+              <div class="vm-dot" style="background:#ef4444;"></div>
+              <div class="vm-dot" style="background:#f59e0b;"></div>
+              <div class="vm-dot" style="background:#22c55e;"></div>
+              <span style="margin-left:8px;font-size:11px;color:var(--muted);">Resume Editor — Folixo</span>
+            </div>
+            <div class="resume-preview">
+              <div class="rp-name"></div>
+              <div class="rp-title"></div>
+              {% for w in ['90%','75%','85%','60%','80%'] %}<div class="rp-line" style="width:{{ w }};"></div>{% endfor %}
+            </div>
+            <div class="ats-card">
+              <div class="ats-score">96</div>
+              <div class="ats-info" style="flex:1;">
+                <h4>ATS Score — Excellent</h4>
+                <p>Ready for Google, Amazon, Meta</p>
+                <div class="ats-bar-wrap"><div class="ats-bar-fill"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="fbadge fb2"><i class="bi bi-robot" style="color:var(--p);"></i> Claude AI analyzing...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ATS EXPLAINED ── -->
+<section class="ats-section">
+  <div class="container">
+    <div class="ats-explain">
+      <div class="ats-text reveal">
+        <div class="badge-pill"><i class="bi bi-cpu"></i> ATS Optimization</div>
+        <h2>Built to Beat<br><span class="grad">Applicant Tracking Systems</span></h2>
+        <p>Over 95% of Fortune 500 companies use ATS software to filter resumes before a human ever reads them. Our templates are built from the ground up to pass every ATS scan.</p>
+        <div class="ats-points">
+          {% for icon,bg,color,title,desc in [
+            ('bi-check2-circle','rgba(34,197,94,.12)','#22c55e','Keyword Optimized','AI detects missing keywords for your target role and suggests additions.'),
+            ('bi-fonts','rgba(26,115,232,.12)','#1a73e8','ATS-Safe Fonts','Only clean, machine-readable fonts — no fancy fonts that break ATS parsing.'),
+            ('bi-layout-text-window','rgba(108,63,197,.12)','#6c3fc5','Clean Structure','No tables, columns, or graphics that confuse ATS — only what works.'),
+            ('bi-robot','rgba(251,146,60,.12)','#fb923c','AI Review','Claude AI reviews your resume and flags ATS issues in real-time.'),
+          ] %}
+          <div class="ap">
+            <div class="ap-icon" style="background:{{ bg }};"><i class="bi {{ icon }}" style="color:{{ color }};"></i></div>
+            <div><h5>{{ title }}</h5><p>{{ desc }}</p></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="score-visual">
+          <div class="sv-title">ATS Compatibility Score</div>
+          {% for label, pct, color in [
+            ('Keywords Match', 94, '#22c55e'),
+            ('Format Score', 100, '#1a73e8'),
+            ('Readability', 98, '#6c3fc5'),
+            ('Section Structure', 96, '#fb923c'),
+            ('Overall ATS Score', 96, '#22c55e'),
+          ] %}
+          <div class="sv-item">
+            <div class="sv-item-head">
+              <span>{{ label }}</span>
+              <span style="color:{{ color }};">{{ pct }}%</span>
+            </div>
+            <div class="sv-bar">
+              <div class="sv-fill" style="width:{{ pct }}%;background:{{ color }};"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="badge-pill"><i class="bi bi-stars"></i> Features</div>
+      <h2 class="fw-800" style="font-size:2.2rem;">Everything you need to<br>land your dream job</h2>
+    </div>
+    <div class="row g-4">
+      {% for icon,bg,color,title,desc in [
+        ('bi-robot','rgba(108,63,197,.12)','#6c3fc5','Claude AI Suggestions','AI analyzes your resume against job requirements and suggests exactly what to add, remove and improve.'),
+        ('bi-eye','rgba(26,115,232,.12)','#1a73e8','Live Real-Time Preview','See every change instantly. What you see is exactly what recruiters get.'),
+        ('bi-file-earmark-pdf','rgba(232,93,4,.12)','#e85d04','One-Click PDF Export','Download a pixel-perfect, print-ready PDF instantly — no watermarks, no limits.'),
+        ('bi-shield-check','rgba(34,197,94,.12)','#22c55e','ATS Score Checker','Built-in ATS score tells you exactly how well your resume will perform.'),
+        ('bi-collection','rgba(26,35,126,.12)','#3949ab','20+ Pro Templates','Crafted by HR professionals and designers from top tech companies.'),
+        ('bi-infinity','rgba(239,68,68,.12)','#ef4444','Always 100% Free','No subscriptions, no premium tiers — every feature free forever.'),
+      ] %}
+      <div class="col-md-6 col-lg-4 reveal d{{ loop.index % 4 }}">
+        <div class="feat-card">
+          <div class="fi" style="background:{{ bg }};"><i class="bi {{ icon }}" style="color:{{ color }};"></i></div>
+          <h5>{{ title }}</h5><p>{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── TEMPLATES ── -->
+<section class="tmpls">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="badge-pill"><i class="bi bi-palette"></i> Templates</div>
+      <h2 class="fw-800" style="font-size:2.2rem;">Trusted by top companies.<br>Loved by candidates.</h2>
+      <p style="color:var(--muted);margin-top:8px;">Designed to pass Google, Amazon, Meta, Microsoft ATS systems.</p>
+    </div>
+    <div class="tmpl-grid">
+      {% set samples=[
+        ('Google Clean','resume','modern','#1a73e8'),
+        ('Amazon Impact','resume','modern','#ff9900'),
+        ('Oxford Scholar','cv','classic','#1a237e'),
+        ('Executive Pro','resume','classic','#1e3a5f'),
+        ('Research Pro','cv','modern','#00695c'),
+        ('Meta Bold','resume','modern','#0866ff'),
+      ] %}
+      {% for name,cat,style,color in samples %}
+      <div class="tc" onclick="location='{{ url_for('templates.browse') }}?category={{ cat }}'">
+        <div class="tc-thumb" style="background:linear-gradient(160deg,{{ color }}dd,{{ color }}66);">
+          <div class="tc-mock">
+            <div class="tc-header">
+              <div class="tc-hname"></div>
+              <div class="tc-htitle"></div>
+              <div class="tc-hcontact">
+                <div class="tc-hc"></div><div class="tc-hc"></div><div class="tc-hc"></div>
+              </div>
+            </div>
+            <div class="tc-body">
+              <div class="tc-sec" style="background:rgba(255,255,255,.6);"></div>
+              {% for w in ['90%','75%','85%','60%'] %}<div class="tc-line" style="width:{{ w }};"></div>{% endfor %}
+              <div class="tc-sec" style="background:rgba(255,255,255,.6);margin-top:10px;"></div>
+              {% for w in ['80%','70%','88%'] %}<div class="tc-line" style="width:{{ w }};"></div>{% endfor %}
+            </div>
+          </div>
+          <div class="tc-overlay">
+            <a href="{{ url_for('auth.register') }}" class="ov-btn ov-p">Use This</a>
+            <a href="{{ url_for('templates.browse') }}?category={{ cat }}" class="ov-btn ov-g">Browse More</a>
+          </div>
+        </div>
+        <div class="tc-info">
+          <div class="tc-name">{{ name }}</div>
+          <span class="tag t-{{ cat[0] }}">{{ cat|title }}</span>
+          <span class="tag t-s">{{ style }}</span>
+          <span class="tag" style="background:rgba(34,197,94,.1);color:#22c55e;">ATS ✓</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5 reveal">
+      <a href="{{ url_for('templates.browse') }}" class="btn btn-primary btn-lg">
+        <i class="bi bi-grid-3x3-gap"></i> Browse All {{ total_templates }} Templates
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2>Your dream job is one resume away.</h2>
+      <p>Join thousands who landed jobs at Google, Amazon, Meta and more with Folixo.</p>
+      <a href="{{ url_for('auth.register') }}" class="btn-cta">
+        <i class="bi bi-rocket-takeoff"></i> Build My Resume Now — Free Forever
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_contact %}{% endblock %}

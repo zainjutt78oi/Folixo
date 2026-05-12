@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Portfolio Editor — {{ tmpl.name }} — Folixo{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static',filename='css/editor.css') }}"/>{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<div class="editor-page">
+  <div class="editor-topbar">
+    <div class="editor-topbar-l">
+      <a href="{{ url_for('main.dashboard') }}" class="back-btn"><i class="bi bi-arrow-left"></i></a>
+      <input type="text" class="title-input" id="docTitle" value="{{ doc.title if doc else 'My Portfolio' }}" placeholder="Portfolio title..."/>
+      <span class="tmpl-badge">{{ tmpl.name }}</span>
+    </div>
+    <div class="editor-topbar-r">
+      <button class="tb-btn ai" id="aiBtn"><i class="bi bi-robot"></i> AI Tips</button>
+      <button class="tb-btn" id="saveBtn"><i class="bi bi-floppy"></i> Save</button>
+      <button class="tb-btn primary" id="exportBtn"><i class="bi bi-file-pdf"></i> Export PDF</button>
+    </div>
+  </div>
+  <div class="editor-body">
+    <div class="editor-left">
+      <div class="etabs">
+        <button class="etab active" data-tab="info"><i class="bi bi-person"></i> Info</button>
+        <button class="etab" data-tab="projects"><i class="bi bi-grid"></i> Projects</button>
+        <button class="etab" data-tab="skills"><i class="bi bi-tools"></i> Skills</button>
+        <button class="etab" data-tab="style"><i class="bi bi-palette"></i> Style</button>
+      </div>
+      <div class="epanel active" id="tab-info">
+        <div class="ef-group"><label>Full Name</label><input type="text" class="ef" id="p-name" placeholder="Muhammad Zain Asif"/></div>
+        <div class="ef-group"><label>Headline</label><input type="text" class="ef" id="p-headline" placeholder="Full Stack Developer & Designer"/></div>
+        <div class="ef-group"><label>Bio</label><textarea class="ef" id="p-bio" rows="4" placeholder="A short compelling bio about yourself..."></textarea></div>
+        <div class="ef-row">
+          <div class="ef-group"><label>Email</label><input type="email" class="ef" id="p-email" placeholder="zain@example.com"/></div>
+          <div class="ef-group"><label>Location</label><input type="text" class="ef" id="p-location" placeholder="Gujrat, Pakistan"/></div>
+        </div>
+        <div class="ef-row">
+          <div class="ef-group"><label>GitHub</label><input type="text" class="ef" id="p-github" placeholder="github.com/zain"/></div>
+          <div class="ef-group"><label>LinkedIn</label><input type="text" class="ef" id="p-linkedin" placeholder="linkedin.com/in/zain"/></div>
+        </div>
+      </div>
+      <div class="epanel" id="tab-projects">
+        <div id="projectList"></div>
+        <button class="add-btn" id="addProject"><i class="bi bi-plus-circle"></i> Add Project</button>
+      </div>
+      <div class="epanel" id="tab-skills">
+        <div class="ef-group"><label>Technical Skills</label><textarea class="ef" id="p-skills" rows="3" placeholder="Python, Flask, JavaScript, HTML, CSS..."></textarea></div>
+        <div class="ef-group"><label>Tools & Software</label><textarea class="ef" id="p-tools" rows="2" placeholder="VS Code, Git, Docker, Figma..."></textarea></div>
+      </div>
+      <div class="epanel" id="tab-style">
+        <div class="opt-label">Accent Color</div>
+        <div class="color-swatches" id="portColors">
+          {% for c in ['#0ea5e9','#22c55e','#f97316','#6c3fc5','#e11d48','#0891b2','#8b5cf6','#10b981'] %}
+          <div class="csw {% if loop.first %}active{% endif %}" style="background:{{ c }};" data-color="{{ c }}"></div>
+          {% endfor %}
+        </div>
+        <div class="opt-label">Layout</div>
+        <div class="opt-grid" id="layoutGrid">
+          {% for l,ico in [('Grid','▦'),('List','≡'),('Cards','🃏'),('Masonry','⊞')] %}
+          <button class="opt-btn {% if loop.first %}active{% endif %}" data-layout="{{ l.lower() }}"><span class="opt-icon">{{ ico }}</span>{{ l }}</button>
+          {% endfor %}
+        </div>
+        <div class="opt-label">Font</div>
+        <div class="opt-grid" id="portFontGrid">
+          {% for f,fam in [('Modern','Inter'),('Classic','Playfair Display'),('Creative','Poppins'),('Minimal','DM Sans')] %}
+          <button class="opt-btn {% if loop.first %}active{% endif %}" data-font="{{ fam }}" style="font-family:'{{ fam }}'">{{ f }}</button>
+          {% endfor %}
+        </div>
+        <div class="opt-label">Background</div>
+        <div class="opt-grid" id="bgGrid">
+          {% for b in ['Dark','Light','Gradient','Glass'] %}
+          <button class="opt-btn {% if loop.first %}active{% endif %}" data-bg="{{ b.lower() }}">{{ b }}</button>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="editor-right">
+      <div class="prev-head">
+        <span class="prev-label"><i class="bi bi-eye"></i> Live Portfolio Preview</span>
+      </div>
+      <div class="prev-wrap">
+        <div class="prev-doc" id="portPrevDoc" style="padding:0;overflow:hidden;--doc-accent:#0ea5e9;">
+          <div id="portPreview" style="min-height:900px;padding:36px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-panel" id="aiPanel">
+      <div class="ai-head"><span><i class="bi bi-robot me-2"></i>AI Tips</span><button id="closeAi"><i class="bi bi-x-lg"></i></button></div>
+      <div class="ai-body" id="aiBody"><div class="ai-idle"><i class="bi bi-lightbulb" style="font-size:36px;color:var(--p);display:block;margin-bottom:12px;"></i>Click AI Tips for portfolio improvement suggestions.</div></div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="templateId" value="{{ tmpl.id }}"/>
+<input type="hidden" id="docId" value="{{ doc.id if doc else '' }}"/>
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static',filename='js/portfolio_editor.js') }}"></script>{% endblock %}

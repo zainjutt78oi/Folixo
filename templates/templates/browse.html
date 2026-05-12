@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Browse Templates — Folixo{% endblock %}
+{% block extra_css %}
+<style>
+.browse{padding:48px 0 72px;}
+.browse-hero{text-align:center;margin-bottom:44px;}
+.browse-hero h1{font-size:2.4rem;font-weight:900;color:var(--txt);margin-bottom:10px;}
+.browse-hero p{font-size:16px;color:var(--muted);}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px;}
+.fb{padding:8px 22px;border-radius:50px;font-size:13px;font-weight:600;border:1.5px solid var(--border);background:var(--bg2);color:var(--txt2);cursor:pointer;transition:var(--t);}
+.fb:hover,.fb.active{background:var(--p);color:#fff;border-color:var(--p);transform:translateY(-1px);box-shadow:0 4px 14px rgba(108,63,197,.3);}
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.tc{background:var(--card);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;transition:var(--t);cursor:pointer;position:relative;}
+.tc:hover{border-color:var(--p);transform:translateY(-8px);box-shadow:var(--sh2);}
+.tc-thumb{height:210px;position:relative;overflow:hidden;}
+.tc-mock{width:100%;height:100%;padding:18px 16px;display:flex;flex-direction:column;}
+.tc-header{border-bottom:2px solid rgba(255,255,255,.2);padding-bottom:10px;margin-bottom:10px;}
+.tc-name{height:11px;border-radius:2px;background:rgba(255,255,255,.85);width:52%;margin-bottom:6px;}
+.tc-title{height:8px;border-radius:2px;background:rgba(255,255,255,.55);width:36%;margin-bottom:6px;}
+.tc-contact{display:flex;gap:5px;}
+.tc-cc{height:6px;border-radius:2px;background:rgba(255,255,255,.3);flex:1;}
+.tc-body{flex:1;}
+.tc-sec{height:7px;border-radius:2px;background:rgba(255,255,255,.55);width:28%;margin-bottom:6px;}
+.tc-line{height:5px;border-radius:2px;background:rgba(255,255,255,.22);margin-bottom:4px;}
+.tc-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .3s;}
+.tc:hover .tc-overlay{opacity:1;}
+.ov-btn{padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+.ov-p{background:var(--p);color:#fff;}
+.ov-g{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);}
+.ov-btn:hover{transform:scale(1.05);}
+.ats-dot{position:absolute;top:10px;right:10px;background:rgba(34,197,94,.9);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.5px;}
+.tc-info{padding:14px 16px;}
+.tc-iname{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:7px;}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-right:4px;}
+.t-r{background:rgba(26,115,232,.12);color:#1a73e8;}
+.t-c{background:rgba(26,35,126,.12);color:#3949ab;}
+.t-s{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+.t-a{background:rgba(34,197,94,.1);color:#16a34a;}
+.count{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.no-res{text-align:center;padding:72px 20px;color:var(--muted);}
+.no-res i{font-size:48px;display:block;margin-bottom:12px;opacity:.3;}
+</style>
+{% endblock %}
+{% block content %}
+<div class="browse">
+<div class="container">
+  <div class="browse-hero reveal">
+    <h1>Professional <span class="grad">Resume & CV</span> Templates</h1>
+    <p>ATS-optimized templates trusted by candidates at Google, Amazon, Meta and 500+ top companies.</p>
+  </div>
+  <div class="filter-bar">
+    <button class="fb active" data-f="all">⭐ All Templates</button>
+    <button class="fb" data-f="resume">📄 Resume</button>
+    <button class="fb" data-f="cv">🎓 CV</button>
+    <button class="fb" data-f="modern">⚡ Modern</button>
+    <button class="fb" data-f="classic">🏛 Classic</button>
+    <button class="fb" data-f="creative">🎨 Creative</button>
+    <button class="fb" data-f="minimal">✨ Minimal</button>
+  </div>
+  <div class="count" id="countBar">{{ templates|length }} templates</div>
+  <div class="tmpl-grid" id="tmplGrid">
+    {% for t in templates %}
+    <div class="tc" data-cat="{{ t.category }}" data-style="{{ t.style }}">
+      <div class="ats-dot">ATS ✓</div>
+      <div class="tc-thumb" style="background:linear-gradient(160deg,{{ t.color_accent }}ee,{{ t.color_accent }}77);">
+        <div class="tc-mock">
+          <div class="tc-header">
+            <div class="tc-name"></div>
+            <div class="tc-title"></div>
+            <div class="tc-contact">
+              <div class="tc-cc"></div><div class="tc-cc"></div><div class="tc-cc"></div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-sec"></div>
+            {% for w in ['92%','76%','85%','62%'] %}<div class="tc-line" style="width:{{ w }};"></div>{% endfor %}
+            <div class="tc-sec" style="margin-top:10px;"></div>
+            {% for w in ['80%','70%','88%'] %}<div class="tc-line" style="width:{{ w }};"></div>{% endfor %}
+          </div>
+        </div>
+        <div class="tc-overlay">
+          <a href="{{ url_for('editor.open_editor', tid=t.id) }}" class="ov-btn ov-p">Use Template</a>
+          <a href="{{ url_for('templates.preview', tid=t.id) }}" class="ov-btn ov-g">Preview</a>
+        </div>
+      </div>
+      <div class="tc-info">
+        <div class="tc-iname">{{ t.name }}</div>
+        <span class="tag t-{{ t.category[0] }}">{{ t.category|title }}</span>
+        <span class="tag t-s">{{ t.style }}</span>
+        <span class="tag t-a">ATS Safe</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="no-res" id="noRes" style="display:none;">
+    <i class="bi bi-search"></i><p>No templates found for this filter.</p>
+  </div>
+</div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const fbs=document.querySelectorAll('.fb');
+const cards=document.querySelectorAll('.tc');
+const countBar=document.getElementById('countBar');
+const noRes=document.getElementById('noRes');
+const cat=new URLSearchParams(location.search).get('category');
+if(cat){fbs.forEach(b=>b.classList.toggle('active',b.dataset.f===cat));applyFilter(cat);}
+fbs.forEach(b=>b.addEventListener('click',()=>{fbs.forEach(x=>x.classList.remove('active'));b.classList.add('active');applyFilter(b.dataset.f);}));
+function applyFilter(f){
+  let v=0;
+  cards.forEach((c,i)=>{
+    const show=f==='all'||c.dataset.cat===f||c.dataset.style===f;
+    c.style.display=show?'':'none';
+    if(show){c.style.opacity='0';c.style.transform='translateY(16px)';
+      setTimeout(()=>{c.style.transition=`opacity .3s ease ${v*40}ms,transform .3s ease ${v*40}ms`;c.style.opacity='1';c.style.transform='translateY(0)';},10);v++;}
+  });
+  countBar.textContent=`${v} template${v!==1?'s':''}`;
+  noRes.style.display=v===0?'block':'none';
+}
+</script>
+{% endblock %}

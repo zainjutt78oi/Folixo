@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block title %}Resume Editor — {{ tmpl.name }} — Folixo{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/editor.css') }}"/>
+<style>
+/* ATS score badge */
+.ats-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2);}
+.ats-badge.warn{background:rgba(245,158,11,.12);color:#f59e0b;border-color:rgba(245,158,11,.2);}
+.ats-badge.poor{background:rgba(239,68,68,.12);color:#ef4444;border-color:rgba(239,68,68,.2);}
+/* Tips section */
+.tip-box{background:var(--bg3);border:1px solid var(--border2);border-left:3px solid var(--p);border-radius:0 10px 10px 0;padding:10px 12px;font-size:12px;color:var(--txt2);margin-bottom:14px;line-height:1.6;}
+.tip-box strong{color:var(--p);}
+/* Section divider in preview */
+.prev-sec-divider{display:flex;align-items:center;gap:8px;margin:14px 0 8px;}
+.prev-sec-divider span{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--doc-accent,#1a73e8);white-space:nowrap;}
+.prev-sec-divider::after{content:'';flex:1;height:1.5px;background:var(--doc-accent,#1a73e8);opacity:.25;}
+</style>
+{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="editor-page">
+  <!-- TOP BAR -->
+  <div class="editor-topbar">
+    <div class="editor-topbar-l">
+      <a href="{{ url_for('main.dashboard') }}" class="back-btn"><i class="bi bi-arrow-left"></i></a>
+      <input type="text" class="title-input" id="docTitle"
+             value="{{ doc.title if doc else 'My ' + tmpl.category.upper() }}"
+             placeholder="Document title..."/>
+      <span class="tmpl-badge">{{ tmpl.name }}</span>
+      <span class="ats-badge" id="atsBadge"><i class="bi bi-shield-check"></i> ATS Ready</span>
+    </div>
+    <div class="editor-topbar-r">
+      <button class="tb-btn ai" id="aiBtn"><i class="bi bi-robot"></i> AI Review</button>
+      <button class="tb-btn" id="saveBtn"><i class="bi bi-floppy"></i> Save</button>
+      <button class="tb-btn primary" id="exportBtn"><i class="bi bi-file-pdf"></i> Export PDF</button>
+    </div>
+  </div>
+
+  <div class="editor-body">
+    <!-- LEFT PANEL -->
+    <div class="editor-left">
+      <div class="etabs">
+        <button class="etab active" data-tab="personal"><i class="bi bi-person-circle"></i> Personal</button>
+        <button class="etab" data-tab="experience"><i class="bi bi-briefcase"></i> Experience</button>
+        <button class="etab" data-tab="education"><i class="bi bi-mortarboard"></i> Education</button>
+        <button class="etab" data-tab="skills"><i class="bi bi-tools"></i> Skills</button>
+        {% if tmpl.category == 'cv' %}
+        <button class="etab" data-tab="research"><i class="bi bi-journal-text"></i> Research</button>
+        {% endif %}
+        <button class="etab" data-tab="design"><i class="bi bi-palette"></i> Design</button>
+      </div>
+
+      <!-- PERSONAL -->
+      <div class="epanel active" id="tab-personal">
+        <div class="tip-box"><strong>💡 Pro Tip:</strong> Use your professional email. Add LinkedIn URL — recruiters check it 87% of the time.</div>
+        <div class="ef-group"><label>Full Name</label>
+          <input type="text" class="ef" id="f-name" placeholder="Muhammad Zain Asif"/></div>
+        <div class="ef-row">
+          <div class="ef-group"><label>Job Title / Target Role</label>
+            <input type="text" class="ef" id="f-title" placeholder="Full Stack Developer"/></div>
+          <div class="ef-group"><label>Email</label>
+            <input type="email" class="ef" id="f-email" placeholder="zain@gmail.com"/></div>
+        </div>
+        <div class="ef-row">
+          <div class="ef-group"><label>Phone</label>
+            <input type="text" class="ef" id="f-phone" placeholder="+92 300 1234567"/></div>
+          <div class="ef-group"><label>Location</label>
+            <input type="text" class="ef" id="f-location" placeholder="Gujrat, Pakistan"/></div>
+        </div>
+        <div class="ef-row">
+          <div class="ef-group"><label>LinkedIn URL</label>
+            <input type="text" class="ef" id="f-linkedin" placeholder="linkedin.com/in/zainasif"/></div>
+          <div class="ef-group"><label>GitHub / Portfolio</label>
+            <input type="text" class="ef" id="f-website" placeholder="github.com/zainasif"/></div>
+        </div>
+        <div class="ef-group"><label>Professional Summary <span style="font-size:10px;color:var(--muted);">(3-5 sentences, ATS-friendly)</span></label>
+          <textarea class="ef" id="f-summary" rows="5"
+            placeholder="Results-driven Full Stack Developer with 3+ years building scalable web applications using Python, Flask and JavaScript. Delivered 10+ production systems for clients across fintech and edtech sectors. Strong track record of improving system performance by 40%+. Seeking challenging role at a growth-stage company."></textarea>
+        </div>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="epanel" id="tab-experience">
+        <div class="tip-box"><strong>💡 Pro Tip:</strong> Use action verbs (Led, Built, Improved, Reduced). Add numbers — "Increased performance by 40%" beats "Improved performance".</div>
+        <div id="expList"></div>
+        <button class="add-btn" id="addExp"><i class="bi bi-plus-circle"></i> Add Work Experience</button>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="epanel" id="tab-education">
+        <div class="tip-box"><strong>💡 Pro Tip:</strong> Add GPA only if 3.5+. Include relevant coursework for entry-level positions.</div>
+        <div id="eduList"></div>
+        <button class="add-btn" id="addEdu"><i class="bi bi-plus-circle"></i> Add Education</button>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="epanel" id="tab-skills">
+        <div class="tip-box"><strong>💡 Pro Tip:</strong> Mirror keywords from job descriptions. ATS scans for exact skill matches. Include both hard and soft skills.</div>
+        <div class="ef-group">
+          <label>Technical Skills <span style="font-size:10px;color:var(--muted);">(comma separated)</span></label>
+          <textarea class="ef" id="f-skills" rows="3"
+            placeholder="Python, Flask, Django, JavaScript, React, Node.js, SQL, PostgreSQL, Git, Docker, AWS, REST APIs"></textarea>
+        </div>
+        <div class="ef-group">
+          <label>Soft Skills</label>
+          <textarea class="ef" id="f-softskills" rows="2"
+            placeholder="Problem Solving, Team Leadership, Agile/Scrum, Communication, Critical Thinking"></textarea>
+        </div>
+        <div class="ef-group">
+          <label>Languages</label>
+          <textarea class="ef" id="f-languages" rows="2"
+            placeholder="English (Fluent), Urdu (Native)"></textarea>
+        </div>
+        <div class="ef-group">
+          <label>Certifications &amp; Awards</label>
+          <textarea class="ef" id="f-certs" rows="2"
+            placeholder="AWS Certified Developer, Google Analytics Certified, Dean's List 2023"></textarea>
+        </div>
+        <div class="ef-group">
+          <label>Projects <span style="font-size:10px;color:var(--muted);">(optional)</span></label>
+          <div id="projList"></div>
+          <button class="add-btn" id="addProj" style="margin-top:6px;"><i class="bi bi-plus-circle"></i> Add Project</button>
+        </div>
+      </div>
+
+      {% if tmpl.category == 'cv' %}
+      <!-- RESEARCH (CV only) -->
+      <div class="epanel" id="tab-research">
+        <div class="tip-box"><strong>💡 CV Tip:</strong> List publications in reverse chronological order. Include DOI or URL where possible.</div>
+        <div class="ef-group"><label>Research Interests</label>
+          <textarea class="ef" id="f-research" rows="2" placeholder="Machine Learning, Natural Language Processing, Computer Vision"></textarea></div>
+        <div id="pubList"></div>
+        <button class="add-btn" id="addPub"><i class="bi bi-plus-circle"></i> Add Publication</button>
+        <div class="ef-group" style="margin-top:14px;"><label>Teaching Experience</label>
+          <textarea class="ef" id="f-teaching" rows="2" placeholder="Teaching Assistant, CS101, University of Gujrat, 2023"></textarea></div>
+        <div class="ef-group"><label>Grants &amp; Funding</label>
+          <textarea class="ef" id="f-grants" rows="2" placeholder="HEC Research Grant, $5,000, 2024"></textarea></div>
+      </div>
+      {% endif %}
+
+      <!-- DESIGN -->
+      <div class="epanel" id="tab-design">
+        <div class="tip-box"><strong>💡 Design Tip:</strong> Stick to 1-2 colors. Black text on white bg is most ATS-friendly. Accent color for headings only.</div>
+        <div class="opt-label">Accent Color</div>
+        <div class="color-swatches" id="colorSwatches">
+          {% for c in ['#1a73e8','#0866ff','#ff9900','#6c3fc5','#1e3a5f','#e50914','#00695c','#1a237e','#1d1d1f','#0078d4'] %}
+          <div class="csw {% if c == (tmpl.color_accent or '#1a73e8') %}active{% endif %}"
+               style="background:{{ c }};" data-color="{{ c }}"></div>
+          {% endfor %}
+        </div>
+        <div class="opt-label">Font Style</div>
+        <div class="opt-grid" id="fontGrid">
+          {% for f,fam,note in [('Modern','Inter','Clean & ATS safe'),('Classic','Georgia','Traditional look'),('Sharp','DM Sans','Tech companies'),('Minimal','Helvetica','Ultra clean')] %}
+          <button class="opt-btn {% if loop.first %}active{% endif %}" data-font="{{ fam }}" title="{{ note }}" style="font-family:'{{ fam }}'">
+            <span style="font-size:14px;">Aa</span>
+            <span style="font-size:10px;">{{ f }}</span>
+          </button>
+          {% endfor %}
+        </div>
+        <div class="opt-label">Layout Style</div>
+        <div class="opt-grid" id="layoutGrid">
+          {% for l,ico,note in [('Single Column','▬','Most ATS-safe'),('Two Column','▬▬','Modern look'),('Side Accent','◧','Creative'),('Compact','▤','Fits more')] %}
+          <button class="opt-btn {% if loop.first %}active{% endif %}" data-layout="{{ l.lower().replace(' ','-') }}" title="{{ note }}">
+            <span class="opt-icon">{{ ico }}</span>
+            <span>{{ l }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: LIVE PREVIEW -->
+    <div class="editor-right">
+      <div class="prev-head">
+        <span class="prev-label"><i class="bi bi-eye"></i> Live Preview — A4 Format</span>
+        <span style="font-size:11px;color:var(--muted);" id="pageCount">1 page</span>
+      </div>
+      <div class="prev-wrap">
+        <div class="prev-doc" id="prevDoc" style="--doc-accent:{{ tmpl.color_accent or '#1a73e8' }};">
+          <div id="prevContent">
+            <div style="text-align:center;padding:72px 20px;color:var(--muted);">
+              <i class="bi bi-file-earmark-person" style="font-size:52px;display:block;margin-bottom:16px;opacity:.25;"></i>
+              <p style="font-size:15px;font-weight:600;margin-bottom:6px;">Start filling your details</p>
+              <p style="font-size:13px;">Your professional {{ tmpl.category|upper }} will appear here in real-time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI PANEL -->
+    <div class="ai-panel" id="aiPanel">
+      <div class="ai-head">
+        <span><i class="bi bi-robot me-2"></i>AI Resume Review</span>
+        <button id="closeAi"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div id="aiScoreWrap" style="display:none;" class="ai-score-wrap">
+        <div class="ai-score-lbl">ATS & Quality Score</div>
+        <div class="ai-score-bg"><div class="ai-score-fill" id="aiScoreFill"></div></div>
+        <div class="ai-score-num" id="aiScoreNum"></div>
+      </div>
+      <div class="ai-body" id="aiBody">
+        <div class="ai-idle">
+          <i class="bi bi-robot" style="font-size:36px;color:var(--p);display:block;margin-bottom:12px;"></i>
+          <strong>Claude AI Resume Review</strong><br><br>
+          Get expert feedback on keywords, impact statements, ATS compatibility and formatting.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="templateId" value="{{ tmpl.id }}"/>
+<input type="hidden" id="docId" value="{{ doc.id if doc else '' }}"/>
+<input type="hidden" id="docCategory" value="{{ tmpl.category }}"/>
+<input type="hidden" id="docAccent" value="{{ tmpl.color_accent or '#1a73e8' }}"/>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static',filename='js/editor.js') }}"></script>
+{% endblock %}

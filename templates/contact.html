@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block title %}Contact — Folixo{% endblock %}
+{% block extra_css %}
+<style>
+.contact-page{padding:80px 0 72px;min-height:100vh;}
+.contact-hero{text-align:center;margin-bottom:56px;}
+.contact-hero h1{font-size:2.6rem;font-weight:900;color:var(--txt);margin-bottom:14px;}
+.contact-hero p{font-size:17px;color:var(--txt2);max-width:540px;margin:0 auto;line-height:1.75;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+/* Left info card */
+.contact-info{background:linear-gradient(135deg,var(--p),var(--p2));border-radius:24px;padding:36px;color:#fff;position:relative;overflow:hidden;}
+.contact-info::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.07);}
+.contact-info::after{content:'';position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.05);}
+.contact-info h2{font-size:22px;font-weight:800;margin-bottom:10px;position:relative;}
+.contact-info p{font-size:14px;opacity:.9;line-height:1.75;margin-bottom:28px;position:relative;}
+.contact-links{display:flex;flex-direction:column;gap:14px;position:relative;}
+.cl{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.12);border-radius:14px;text-decoration:none;color:#fff;transition:all .3s;border:1px solid rgba(255,255,255,.15);}
+.cl:hover{background:rgba(255,255,255,.22);transform:translateX(4px);color:#fff;}
+.cl-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.cl-text .label{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+.cl-text .value{font-size:14px;font-weight:700;margin-top:1px;}
+.dev-badge{margin-top:28px;padding:14px 16px;background:rgba(255,255,255,.1);border-radius:12px;border:1px solid rgba(255,255,255,.15);position:relative;}
+.dev-badge .title{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:4px;}
+.dev-badge .name{font-size:16px;font-weight:800;}
+.dev-badge .role{font-size:12px;opacity:.8;margin-top:2px;}
+/* Right message card */
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;}
+.contact-card h3{font-size:18px;font-weight:800;color:var(--txt);margin-bottom:6px;}
+.contact-card p{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.fg label{font-size:12px;font-weight:600;color:var(--txt2);}
+.fi{width:100%;padding:10px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;color:var(--txt);font-size:14px;outline:none;transition:all .3s;font-family:inherit;}
+.fi:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(108,63,197,.15);}
+textarea.fi{resize:vertical;}
+.btn-send{width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .3s;margin-top:4px;}
+.btn-send:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(108,63,197,.35);}
+.success-msg{display:none;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:14px;text-align:center;color:#22c55e;font-size:14px;font-weight:600;margin-top:14px;}
+/* Portfolio offer */
+.portfolio-offer{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:32px;margin-top:40px;text-align:center;}
+.portfolio-offer h3{font-size:20px;font-weight:800;color:var(--txt);margin-bottom:10px;}
+.portfolio-offer p{font-size:15px;color:var(--txt2);line-height:1.7;margin-bottom:20px;}
+.offer-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:24px;text-align:left;}
+.of{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--txt2);}
+.of i{color:var(--p);font-size:16px;}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-page">
+<div class="container">
+  <div class="contact-hero reveal">
+    <div class="badge-pill"><i class="bi bi-envelope-heart"></i> Get In Touch</div>
+    <h1>Let's Build Something<br><span class="grad">Amazing Together</span></h1>
+    <p>Have a suggestion for Folixo? Want a custom portfolio built? Or just want to say hi? I'd love to hear from you!</p>
+  </div>
+
+  <div class="contact-grid">
+    <!-- Left: Contact info -->
+    <div class="reveal">
+      <div class="contact-info">
+        <h2>Muhammad Zain Asif</h2>
+        <p>BS Information Technology student at University of Gujrat. Building Folixo to help students and professionals land their dream jobs — 100% free.</p>
+
+        <div class="contact-links">
+          <a href="https://wa.me/923264999932" target="_blank" class="cl">
+            <div class="cl-icon"><i class="bi bi-whatsapp"></i></div>
+            <div class="cl-text">
+              <div class="label">WhatsApp</div>
+              <div class="value">+92 326 4999932</div>
+            </div>
+          </a>
+          <a href="mailto:zainasifceh@gmail.com" class="cl">
+            <div class="cl-icon"><i class="bi bi-envelope-fill"></i></div>
+            <div class="cl-text">
+              <div class="label">Email</div>
+              <div class="value">zainasifceh@gmail.com</div>
+            </div>
+          </a>
+          <a href="https://github.com/zainjutt78oi" target="_blank" class="cl">
+            <div class="cl-icon"><i class="bi bi-github"></i></div>
+            <div class="cl-text">
+              <div class="label">GitHub</div>
+              <div class="value">zainjutt78oi</div>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/zain.exe13" target="_blank" class="cl">
+            <div class="cl-icon"><i class="bi bi-instagram"></i></div>
+            <div class="cl-text">
+              <div class="label">Instagram</div>
+              <div class="value">@zain.exe13</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dev-badge">
+          <div class="title">Developer & Creator</div>
+          <div class="name">Folixo Project</div>
+          <div class="role">University of Gujrat · BS IT</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Message form -->
+    <div class="reveal d2">
+      <div class="contact-card">
+        <h3>Send a Message</h3>
+        <p>For suggestions, bugs, collaborations or custom portfolio requests.</p>
+        <div class="fg"><label>Your Name</label><input type="text" class="fi" id="cName" placeholder="Your full name"/></div>
+        <div class="fg"><label>Email or WhatsApp</label><input type="text" class="fi" id="cContact" placeholder="your@email.com or +92..."/></div>
+        <div class="fg"><label>Subject</label>
+          <select class="fi" id="cSubject">
+            <option value="">— Select topic —</option>
+            <option value="portfolio">I want a custom portfolio built</option>
+            <option value="suggestion">Suggestion for Folixo</option>
+            <option value="bug">Bug report</option>
+            <option value="collab">Collaboration</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Message</label>
+          <textarea class="fi" id="cMessage" rows="4" placeholder="Tell me what's on your mind..."></textarea>
+        </div>
+        <button class="btn-send" onclick="sendMessage()">
+          <i class="bi bi-send me-2"></i>Send Message via WhatsApp
+        </button>
+        <div class="success-msg" id="successMsg">
+          <i class="bi bi-check-circle me-2"></i>Opening WhatsApp...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio offer section -->
+  <div class="portfolio-offer reveal">
+    <div class="badge-pill" style="margin-bottom:12px;"><i class="bi bi-grid-3x3-gap"></i> Custom Portfolio Service</div>
+    <h3>Want a Professional Portfolio Website?</h3>
+    <p>I build custom, animated portfolio websites for developers, designers, students and professionals.<br>
+       Fast delivery · Mobile responsive · Unique design · Affordable price.</p>
+    <div class="offer-features">
+      <div class="of"><i class="bi bi-check-circle-fill"></i>Custom Design</div>
+      <div class="of"><i class="bi bi-check-circle-fill"></i>Fully Animated</div>
+      <div class="of"><i class="bi bi-check-circle-fill"></i>Mobile Responsive</div>
+      <div class="of"><i class="bi bi-check-circle-fill"></i>Fast Delivery</div>
+      <div class="of"><i class="bi bi-check-circle-fill"></i>Source Code Included</div>
+      <div class="of"><i class="bi bi-check-circle-fill"></i>Free Revisions</div>
+    </div>
+    <a href="https://wa.me/923264999932?text=Hi%20Zain!%20I%20want%20a%20custom%20portfolio%20built.%20Can%20you%20help?" 
+       target="_blank" class="btn btn-primary">
+      <i class="bi bi-whatsapp"></i> Contact on WhatsApp
+    </a>
+  </div>
+
+</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function sendMessage(){
+  const name    = document.getElementById('cName').value.trim();
+  const contact = document.getElementById('cContact').value.trim();
+  const subject = document.getElementById('cSubject').value;
+  const message = document.getElementById('cMessage').value.trim();
+  if(!name || !message){ alert('Please fill in your name and message.'); return; }
+  const text = `Hi Zain! I'm ${name}.\n\nSubject: ${subject||'General'}\nContact: ${contact||'Not provided'}\n\nMessage:\n${message}\n\n(Sent from Folixo Contact Page)`;
+  const url  = `https://wa.me/923264999932?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+  document.getElementById('successMsg').style.display = 'block';
+  setTimeout(()=>{ document.getElementById('successMsg').style.display='none'; }, 4000);
+}
+</script>
+{% endblock %}
